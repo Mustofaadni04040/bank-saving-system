@@ -7,7 +7,7 @@ require("dotenv").config();
 async function createAdmin() {
   try {
     await mongoose.connect(process.env.MONGO_URI!);
-    const adminExists = await Admin.findOne({ email: "admin@bank.com" });
+    const adminExists = await Admin.findOne({ name: "admin1" });
 
     if (adminExists) {
       console.log("Admin is exist");
@@ -15,8 +15,7 @@ async function createAdmin() {
     }
 
     await Admin.create({
-      name: "admin",
-      email: "admin@bank.com",
+      name: "admin1",
       password: await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10),
     });
 
