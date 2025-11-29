@@ -1,7 +1,7 @@
 import bcrypt = require("bcryptjs");
 import mongoose = require("mongoose");
 
-const Admin = require("../models/admin");
+const Admin = require("../models/adminModel");
 require("dotenv").config();
 
 async function createAdmin() {
