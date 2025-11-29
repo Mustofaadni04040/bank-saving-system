@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const depositoSchema = new mongoose.Schema(
+const depositoTypeSchema = new mongoose.Schema(
   {
     name: String,
     yearlyReturn: Number,
@@ -8,4 +8,4 @@ const depositoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Deposito", depositoSchema);
+module.exports = mongoose.model("DepositoType", depositoTypeSchema);
