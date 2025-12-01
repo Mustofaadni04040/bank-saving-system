@@ -12,10 +12,12 @@ const customerAuth = (
   }
 
   try {
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    const decode = jwt.verify(token, process.env.SECRET_KEY);
 
     if (decode.role !== "customer") {
-      return res.status(403).json({ message: "Forbidden" });
+      return res
+        .status(403)
+        .json({ message: "Forbidden, you don't have permission to access" });
     }
     req.customerId = decode.id;
     next();

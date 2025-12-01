@@ -8,10 +8,14 @@ const adminAuth = (req: e.Request, res: e.Response, next: e.NextFunction) => {
   }
 
   try {
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    const decode = jwt.verify(token, process.env.SECRET_KEY);
+
+    console.log(decode);
 
     if (decode.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
+      return res
+        .status(403)
+        .json({ message: "Forbidden, you don't have permission to access" });
     }
     req.adminId = decode.id;
     next();

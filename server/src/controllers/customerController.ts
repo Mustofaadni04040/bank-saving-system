@@ -27,6 +27,7 @@ const loginCustomer = async (req: e.Request, res: e.Response) => {
 
     const tokenData = {
       customerId: customer._id,
+      role: "customer",
     };
 
     const token = jwt.sign(tokenData, process.env.SECRET_KEY, {

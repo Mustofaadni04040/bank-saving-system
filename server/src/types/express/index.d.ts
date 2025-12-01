@@ -1,6 +1,9 @@
-declare namespace Express {
-  export interface Request {
-    adminId?: string;
-    customerId?: string;
+import { Request } from "express";
+declare global {
+  namespace Express {
+    interface Request {
+      adminId?: string;
+      customerId?: string;
+    }
   }
 }
