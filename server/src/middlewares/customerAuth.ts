@@ -15,11 +15,11 @@ const customerAuth = (
     const decode = jwt.verify(token, process.env.SECRET_KEY);
 
     if (decode.role !== "customer") {
-      return res
-        .status(403)
-        .json({ message: "Forbidden, you don't have permission to access" });
+      return res.status(403).json({
+        message: "Forbidden, you don't have permission to access this route",
+      });
     }
-    req.customerId = decode.id;
+    req.customerId = decode.customerId;
     next();
   } catch (error) {
     console.log(error);

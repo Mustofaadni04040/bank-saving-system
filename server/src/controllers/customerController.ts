@@ -71,4 +71,29 @@ const createCustomer = async (req: e.Request, res: e.Response) => {
   }
 };
 
-module.exports = { loginCustomer, createCustomer };
+const updateCustomer = async (req: e.Request, res: e.Response) => {
+  try {
+    const customerId = req.customerId;
+    const { name } = req.body;
+
+    const customer = await Customer.findById(customerId);
+
+    console.log(customer, "customer");
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    if (name) customer.name = name;
+
+    await customer.save();
+
+    return res
+      .status(200)
+      .json({ message: "Customer updated successfully", success: true });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { loginCustomer, createCustomer, updateCustomer };
