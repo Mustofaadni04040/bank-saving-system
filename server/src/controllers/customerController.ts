@@ -96,4 +96,29 @@ const updateCustomer = async (req: e.Request, res: e.Response) => {
   }
 };
 
-module.exports = { loginCustomer, createCustomer, updateCustomer };
+const getAllCustomers = async (req: e.Request, res: e.Response) => {
+  try {
+    const { page = 1, limit = 5 } = req.query;
+    const customers = await Customer.find()
+      .limit(limit)
+      .skip(Number(limit) * (Number(page) - 1));
+
+    const count = await Customer.countDocuments();
+
+    return res.status(200).json({
+      customers,
+      pages: Math.ceil(count / Number(limit)),
+      total: count,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  loginCustomer,
+  createCustomer,
+  updateCustomer,
+  getAllCustomers,
+};
