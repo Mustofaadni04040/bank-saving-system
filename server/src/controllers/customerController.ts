@@ -1,6 +1,43 @@
 import type e = require("express");
 const Customer = require("../models/customerModel");
 import bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const loginCustomer = async (req: e.Request, res: e.Response) => {
+  try {
+    const { name, password } = req.body;
+
+    if (!name || !password) {
+      return res
+        .status(400)
+        .json({ message: "Name and password are required" });
+    }
+
+    const customer = await Customer.findOne({ name });
+
+    if (!customer) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, customer.password);
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({ message: "Incorrect password, try again" });
+    }
+
+    const tokenData = {
+      customerId: customer._id,
+    };
+
+    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+
+    return res.status(200).json({ name: customer.name, token, success: true });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const createCustomer = async (req: e.Request, res: e.Response) => {
   try {
@@ -25,8 +62,12 @@ const createCustomer = async (req: e.Request, res: e.Response) => {
       password: hashedPassword,
     });
 
-    return res.status(201).json({ message: "Customer created successfully" });
+    return res
+      .status(201)
+      .json({ message: "Customer created successfully", success: true });
   } catch (error) {
     console.log(error);
   }
 };
+
+module.exports = { loginCustomer, createCustomer };
