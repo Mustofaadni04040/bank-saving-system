@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema(
     accountId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Account",
+      index: true,
       required: true,
     },
     type: { type: String, enum: ["deposit", "withdraw"], required: true },

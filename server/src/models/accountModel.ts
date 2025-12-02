@@ -10,6 +10,7 @@ const accountSchema = new mongoose.Schema(
     depositoType: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "DepositoType",
+      index: true,
       required: true,
     },
     balance: { type: Number, default: 0 },
