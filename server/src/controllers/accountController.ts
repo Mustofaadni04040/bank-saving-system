@@ -24,6 +24,7 @@ const createAccount = async (req: e.Request, res: e.Response) => {
     return res.status(201).json({
       message: "Account created successfully",
       account: newAccount[0],
+      success: true,
     });
   } catch (error) {
     await session.abortTransaction();
@@ -71,6 +72,7 @@ const setDepositoAccount = async (req: e.Request, res: e.Response) => {
     res.json({
       message: "Deposito opened successfully",
       account,
+      success: true,
     });
   } catch (error) {
     console.log(error);
