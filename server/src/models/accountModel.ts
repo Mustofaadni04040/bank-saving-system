@@ -7,11 +7,15 @@ const accountSchema = new mongoose.Schema(
       ref: "Customer",
       required: true,
     },
+    packet: {
+      type: String,
+      default: null,
+    },
     depositoType: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "DepositoType",
+      default: null,
       index: true,
-      required: true,
     },
     balance: { type: Number, default: 0 },
     openedAt: { type: Date, default: Date.now() },
