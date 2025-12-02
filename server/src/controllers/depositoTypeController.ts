@@ -1,5 +1,6 @@
 import type e = require("express");
 const DepositoType = require("../models/depositoTypeModel");
+const Account = require("../models/accountModel");
 
 const createDepositoType = async (req: e.Request, res: e.Response) => {
   try {
@@ -66,8 +67,29 @@ const updateDepositoType = async (req: e.Request, res: e.Response) => {
   }
 };
 
+const deleteDepositoType = async (req: e.Request, res: e.Response) => {
+  try {
+    const depositoTypeId = req.params.id;
+
+    const isUsedDepositoType = await Account.exists({ depositoTypeId });
+
+    if (isUsedDepositoType) {
+      return res.status(400).json({
+        message: "Cannot delete, deposito is in used by existing accounts",
+      });
+    }
+
+    await DepositoType.findByIdAndDelete(depositoTypeId);
+
+    res.json({ message: "Deposito Type deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createDepositoType,
   getAllDepositoTypes,
   updateDepositoType,
+  deleteDepositoType,
 };
