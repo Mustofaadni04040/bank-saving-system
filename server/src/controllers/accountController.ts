@@ -64,6 +64,17 @@ const setDepositoAccount = async (req: e.Request, res: e.Response) => {
       return res.status(404).json({ message: "Deposito type not found" });
     }
 
+    const duplicateDeposito = await Account.findOne({
+      customerId,
+      depositoTypeId,
+    });
+
+    if (duplicateDeposito) {
+      return res.status(400).json({
+        message: "You already used this deposito type on another account",
+      });
+    }
+
     account.depositoTypeId = depositoTypeId;
     account.packet = `${packet} months`;
 
@@ -79,4 +90,28 @@ const setDepositoAccount = async (req: e.Request, res: e.Response) => {
   }
 };
 
-module.exports = { createAccount, setDepositoAccount };
+const updateAccount = async (req: e.Request, res: e.Response) => {
+  try {
+    const { accountId } = req.params;
+    const { depositoTypeId, packet } = req.body;
+
+    const account = await Account.findById(accountId);
+
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    if (depositoTypeId) account.depositoTypeId = depositoTypeId;
+    if (packet) account.packet = packet;
+
+    await account.save();
+
+    return res.status(200).json({
+      message: "Account updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+module.exports = { createAccount, setDepositoAccount, updateAccount };
