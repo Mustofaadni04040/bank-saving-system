@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema(
   {
-    customer: {
+    customerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer",
       required: true,
@@ -11,7 +11,7 @@ const accountSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    depositoType: {
+    depositoTypeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "DepositoType",
       default: null,
