@@ -41,7 +41,33 @@ const getAllDepositoTypes = async (req: e.Request, res: e.Response) => {
   }
 };
 
+const updateDepositoType = async (req: e.Request, res: e.Response) => {
+  try {
+    const depositoTypeId = req.params.id;
+    const { name, yearlyReturn } = req.body;
+
+    const depositoType = await DepositoType.findById(depositoTypeId);
+
+    if (!depositoType) {
+      return res.status(404).json({ message: "Deposito type not found" });
+    }
+
+    if (name) depositoType.name = name;
+    if (yearlyReturn) depositoType.yearlyReturn = yearlyReturn;
+
+    await depositoType.save();
+
+    return res.status(200).json({
+      message: "Deposito type updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createDepositoType,
   getAllDepositoTypes,
+  updateDepositoType,
 };
