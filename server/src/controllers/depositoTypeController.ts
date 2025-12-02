@@ -28,6 +28,20 @@ const createDepositoType = async (req: e.Request, res: e.Response) => {
   }
 };
 
+const getAllDepositoTypes = async (req: e.Request, res: e.Response) => {
+  try {
+    const depositoTypes = await DepositoType.find();
+
+    return res.status(200).json({
+      depositoTypes,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createDepositoType,
+  getAllDepositoTypes,
 };
