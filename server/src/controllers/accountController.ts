@@ -114,4 +114,29 @@ const updateAccount = async (req: e.Request, res: e.Response) => {
     console.log(error);
   }
 };
-module.exports = { createAccount, setDepositoAccount, updateAccount };
+
+const getAllAccounts = async (req: e.Request, res: e.Response) => {
+  try {
+    const { page = 1, limit = 5 } = req.query;
+    const accounts = await Account.find()
+      .limit(limit)
+      .skip(Number(limit) * (Number(page) - 1));
+
+    const count = await Account.countDocuments();
+
+    return res.status(200).json({
+      accounts,
+      pages: Math.ceil(count / Number(limit)),
+      total: count,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+module.exports = {
+  createAccount,
+  setDepositoAccount,
+  updateAccount,
+  getAllAccounts,
+};
