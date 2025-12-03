@@ -147,7 +147,9 @@ const deleteAccount = async (req: e.Request, res: e.Response) => {
     }
 
     if (String(account.customerId) !== customerId) {
-      return res.status(403).json({ message: "Unauthorized" });
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to delete this account" });
     }
 
     if (account.balance > 0) {

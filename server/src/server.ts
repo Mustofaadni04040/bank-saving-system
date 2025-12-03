@@ -6,6 +6,7 @@ const customerRoute = require("./routes/customerRoute");
 const adminRoute = require("./routes/adminRoute");
 const depositoTypeRoute = require("./routes/depositoTypeRoute");
 const accountRoute = require("./routes/accountRoute");
+const transactionRoute = require("./routes/transactionRoute");
 
 require("dotenv").config();
 
@@ -34,6 +35,7 @@ app.use("/api/v1/customers", customerRoute);
 app.use("/api/v1/admins", adminRoute);
 app.use("/api/v1/deposito-types", depositoTypeRoute);
 app.use("/api/v1/accounts", accountRoute);
+app.use("/api/v1/transactions", transactionRoute);
 
 app.get("/", (req: e.Request, res: e.Response) =>
   res.send("Bank Saving API is running")
