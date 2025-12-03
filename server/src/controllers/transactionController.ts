@@ -146,5 +146,30 @@ const withdrawTransaction = async (req: e.Request, res: e.Response) => {
     console.log(error);
   }
 };
+const getAllTransactions = async (req: e.Request, res: e.Response) => {
+  try {
+    const { page = 1, limit = 5 } = req.query;
+    const transactions = await Transaction.find()
+      .populate("accountId")
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(Number(limit) * (Number(page) - 1));
 
-module.exports = { depositTransaction, withdrawTransaction };
+    const count = await Transaction.countDocuments();
+
+    res.json({
+      transactions,
+      pages: Math.ceil(count / Number(limit)),
+      total: count,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  depositTransaction,
+  withdrawTransaction,
+  getAllTransactions,
+};

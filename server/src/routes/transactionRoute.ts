@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const customerAuth = require("../middlewares/customerAuth");
+const adminAuth = require("../middlewares/adminAuth");
 const isValidatedObjectId = require("../middlewares/isValidatedObjectId");
 const {
   depositTransaction,
   withdrawTransaction,
+  getAllTransactions,
 } = require("../controllers/transactionController");
 
 router.post(
@@ -19,5 +21,6 @@ router.post(
   isValidatedObjectId,
   withdrawTransaction
 );
+router.get("/get-transactions", adminAuth, getAllTransactions);
 
 module.exports = router;
