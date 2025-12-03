@@ -134,9 +134,43 @@ const getAllAccounts = async (req: e.Request, res: e.Response) => {
     console.log(error);
   }
 };
+
+const deleteAccount = async (req: e.Request, res: e.Response) => {
+  try {
+    const { accountId } = req.params;
+    const customerId = req.customerId;
+
+    const account = await Account.findById(accountId);
+
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    if (String(account.customerId) !== customerId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    if (account.balance > 0) {
+      return res
+        .status(400)
+        .json({ message: "You can't delete an account with balance" });
+    }
+
+    await Account.findByIdAndDelete(accountId);
+
+    return res.status(200).json({
+      message: "Account deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createAccount,
   setDepositoAccount,
   updateAccount,
   getAllAccounts,
+  deleteAccount,
 };
