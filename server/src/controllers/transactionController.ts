@@ -168,8 +168,50 @@ const getAllTransactions = async (req: e.Request, res: e.Response) => {
   }
 };
 
+const getTransactionsByCustomerId = async (req: e.Request, res: e.Response) => {
+  try {
+    const customerId = req.customerId;
+    const { accountId } = req.params;
+    const { page = 1, limit = 5 } = req.query;
+
+    const account = await Account.findById(accountId);
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    if (String(account.customerId) !== customerId) {
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to access this account" });
+    }
+
+    const transactions = await Transaction.find({ accountId })
+      .sort({
+        createdAt: -1,
+      })
+      .limit(limit)
+      .skip(Number(limit) * (Number(page) - 1));
+
+    if (!transactions) {
+      return res.status(404).json({ message: "Transactions not found" });
+    }
+
+    const count = await Transaction.countDocuments({ accountId });
+
+    res.json({
+      transactions,
+      pages: Math.ceil(count / Number(limit)),
+      total: count,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   depositTransaction,
   withdrawTransaction,
   getAllTransactions,
+  getTransactionsByCustomerId,
 };

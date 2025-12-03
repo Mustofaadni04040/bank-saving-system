@@ -7,6 +7,7 @@ const {
   depositTransaction,
   withdrawTransaction,
   getAllTransactions,
+  getTransactionsByCustomerId,
 } = require("../controllers/transactionController");
 
 router.post(
@@ -22,5 +23,11 @@ router.post(
   withdrawTransaction
 );
 router.get("/get-transactions", adminAuth, getAllTransactions);
+router.get(
+  "/get-transactions/:accountId",
+  customerAuth,
+  isValidatedObjectId,
+  getTransactionsByCustomerId
+);
 
 module.exports = router;
